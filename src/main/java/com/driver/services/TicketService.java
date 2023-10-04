@@ -52,18 +52,19 @@ public class TicketService {
 
         String[]str = s.split(",");
 
-        int a = 0 ,b =0;
+        int a = -1 ,b =-1;
 
-        for(String ss : str){
+        for(int i=0;i<str.length;i++){
+            String ss = str[i];
             if(ss.equals(bookTicketEntryDto.getFromStation().toString())){
-                a = 1;
+                a = i;
             }
             if(ss.equals(bookTicketEntryDto.getToStation().toString())){
-                b=1;
+                b = i;
             }
         }
 
-        if(b==0 && a==0){
+        if(b==-1 || a==-1 || b<a) {
             throw new Exception("Invalid stations");
         }
 
