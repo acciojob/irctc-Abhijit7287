@@ -125,7 +125,7 @@ public class TrainService {
             }
         }
 
-        if(b==true){
+        if(b==false){
             throw new Exception("Train is not passing from this station");
         }
 
