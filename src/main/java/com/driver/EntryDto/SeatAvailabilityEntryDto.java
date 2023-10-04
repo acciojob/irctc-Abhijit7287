@@ -7,15 +7,14 @@ public class SeatAvailabilityEntryDto {
 
     private int trainId;
 
-
     private Station fromStation;
 
     private Station toStation;
 
-    public SeatAvailabilityEntryDto() {
+    public SeatAvailabilityEntryDto(){
     }
 
-    public SeatAvailabilityEntryDto(int trainId, Station fromStation, Station toStation) {
+    public SeatAvailabilityEntryDto(int trainId, Station fromStation, Station toStation){
         this.trainId = trainId;
         this.fromStation = fromStation;
         this.toStation = toStation;

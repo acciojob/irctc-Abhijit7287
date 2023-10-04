@@ -9,11 +9,9 @@ public class BookTicketEntryDto {
 
     private List<Integer> passengerIds;
 
-
     private Integer bookingPersonId;
 
     private Integer trainId;
-
 
     private Station fromStation;
 
