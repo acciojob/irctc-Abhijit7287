@@ -134,15 +134,16 @@ public class TicketService {
         ////setting the passenger
         List<Integer> list = bookTicketEntryDto.getPassengerIds();
 
-        Ticket ticket = new Ticket();
-
-        for(int id : list){
-            Passenger passenger = passengerRepository.findById(id).get();
-
-            ticket.getPassengersList().add(passenger);
+        List<Passenger> passengers= new ArrayList<>();
+        for (int pasangerId: bookTicketEntryDto.getPassengerIds()){
+            Passenger passenger= passengerRepository.findById(pasangerId).get();
+            passengers.add(passenger);
         }
 
+        Ticket ticket = new Ticket();
+
         ///setting other attributes
+        ticket.setPassengersList(passengers);
         ticket.setFromStation(bookTicketEntryDto.getFromStation());
         ticket.setToStation(bookTicketEntryDto.getToStation());
         ticket.setTotalFare(totalFare);
