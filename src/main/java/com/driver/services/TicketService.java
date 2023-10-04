@@ -72,9 +72,45 @@ public class TicketService {
                 ,bookTicketEntryDto.getFromStation(),bookTicketEntryDto.getToStation());
 
 
-        int check = calculateAvailableSeats(seatAvailabilityEntryDto);
 
-       if(check<bookTicketEntryDto.getNoOfSeats()){
+        Optional<Train> trainobj = trainRepository.findById(seatAvailabilityEntryDto.getTrainId());
+
+        Train train1 = trainobj.get();
+
+        String ss = train1.getRoute();
+
+        String[]arr = ss.split(",");
+
+        HashMap<String,Integer> map = new HashMap<>();
+        int n = 1;
+
+        for(int i=0;i<arr.length;i++){
+            String a1 = arr[i];
+            map.put(a1,n);
+            n++;
+        }
+
+        int totalSeats = train.getNoOfSeats();
+        int from = map.get(seatAvailabilityEntryDto.getFromStation().toString());
+        int to = map.get(seatAvailabilityEntryDto.getToStation().toString());
+
+        List<Ticket> tickets = train1.getBookedTickets();
+
+        for(Ticket ticket : tickets){
+
+            int fromCheck = map.get(ticket.getFromStation().toString());
+            int toCheck = map.get(ticket.getToStation().toString());
+
+            int noOfPassenger = ticket.getPassengersList().size();
+
+
+            if(to>fromCheck && from<toCheck){
+                totalSeats-=noOfPassenger;
+            }
+        }
+
+
+       if(totalSeats<bookTicketEntryDto.getNoOfSeats()){
            throw new Exception("Less tickets are available");
        }
 
@@ -115,11 +151,11 @@ public class TicketService {
         ///setting foreign key
         ticket.setTrain(train);
 
-        List<Ticket> tickets = train.getBookedTickets();
+        List<Ticket> ticketslist = train.getBookedTickets();
 
-        tickets.add(ticket);
+        ticketslist.add(ticket);
 
-        train.setBookedTickets(tickets);
+        train.setBookedTickets(ticketslist);
 
         ///setting booking person
         Passenger passenger = passengerRepository.findById(bookTicketEntryDto.getBookingPersonId()).get();
@@ -132,55 +168,6 @@ public class TicketService {
 
         return ticket1.getTicketId();
 
-    }
-    public Integer calculateAvailableSeats(SeatAvailabilityEntryDto seatAvailabilityEntryDto){
-
-        //Calculate the total seats available
-        //Suppose the route is A B C D
-        //And there are 2 seats avaialble in total in the train
-        //and 2 tickets are booked from A to C and B to D.
-        //The seat is available only between A to C and A to B. If a seat is empty between 2 station it will be counted to our final ans
-        //even if that seat is booked post the destStation or before the boardingStation
-        //Inshort : a train has totalNo of seats and there are tickets from and to different locations
-        //We need to find out the available seats between the given 2 stations.
-
-        Optional<Train> trainobj = trainRepository.findById(seatAvailabilityEntryDto.getTrainId());
-
-        Train train = trainobj.get();
-
-        String s = train.getRoute();
-
-        String[]arr = s.split(",");
-
-        HashMap<String,Integer> map = new HashMap<>();
-        int n = 1;
-
-        for(int i=0;i<arr.length;i++){
-            String a1 = arr[i];
-            map.put(a1,n);
-            n++;
-        }
-
-        int totalSeats = train.getNoOfSeats();
-        int from = map.get(seatAvailabilityEntryDto.getFromStation().toString());
-        int to = map.get(seatAvailabilityEntryDto.getToStation().toString());
-
-        List<Ticket> tickets = train.getBookedTickets();
-
-        for(Ticket ticket : tickets){
-
-            int fromCheck = map.get(ticket.getFromStation().toString());
-            int toCheck = map.get(ticket.getToStation().toString());
-
-            int noOfPassenger = ticket.getPassengersList().size();
-
-
-            if(to>fromCheck && from<toCheck){
-                totalSeats-=noOfPassenger;
-            }
-        }
-
-        return totalSeats;
     }
 
 }
