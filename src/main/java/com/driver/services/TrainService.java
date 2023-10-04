@@ -82,15 +82,15 @@ public class TrainService {
         }
 
         int totalSeats = train.getNoOfSeats();
-        int from = map.get(seatAvailabilityEntryDto.getFromStation());
-        int to = map.get(seatAvailabilityEntryDto.getToStation());
+        int from = map.get(seatAvailabilityEntryDto.getFromStation().toString());
+        int to = map.get(seatAvailabilityEntryDto.getToStation().toString());
 
         List<Ticket> tickets = train.getBookedTickets();
 
         for(Ticket ticket : tickets){
 
-            int fromCheck = map.get(ticket.getFromStation());
-            int toCheck = map.get(ticket.getToStation());
+            int fromCheck = map.get(ticket.getFromStation().toString());
+            int toCheck = map.get(ticket.getToStation().toString());
 
             int noOfPassenger = ticket.getPassengersList().size();
 
@@ -189,10 +189,10 @@ public class TrainService {
 
             String[]arr = s.split(",");
 
-            int index = 0;
+            int index = -1;
 
             for(int i=0;i<arr.length;i++){
-                if(arr[i].equals(station)){
+                if(arr[i].equals(station.toString())){
                     index = i;
                     break;
                 }
