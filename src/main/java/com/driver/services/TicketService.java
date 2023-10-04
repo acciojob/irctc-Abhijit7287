@@ -55,10 +55,10 @@ public class TicketService {
         int a = 0 ,b =0;
 
         for(String ss : str){
-            if(ss.equals(bookTicketEntryDto.getFromStation())){
+            if(ss.equals(bookTicketEntryDto.getFromStation().toString())){
                 a = 1;
             }
-            if(ss.equals(bookTicketEntryDto.getToStation())){
+            if(ss.equals(bookTicketEntryDto.getToStation().toString())){
                 b=1;
             }
         }
