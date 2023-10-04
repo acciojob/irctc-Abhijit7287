@@ -119,7 +119,7 @@ public class TrainService {
         boolean b = false;
 
         for(String s1 : arr){
-            if(s1.equals(station)){
+            if(s1.equals(station.toString())){
                 b = true;
                 break;
             }
